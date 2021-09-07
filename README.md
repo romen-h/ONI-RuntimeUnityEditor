@@ -14,9 +14,4 @@ In-game inspector, editor and interactive console for Oxygen Not Included. Based
 3. Open the solution in Visual Studio and build the `RuntimeUnityEditor.Core` and `RuntimeUnityEditor.ONI` projects.
 
 Notes:
-- If you already have the repository cloned or want to update the mcs submodule you need to run `git submodule update --init --recursive` on your local repository.
 - You have to reconnect the references to the Oxygen Not Included "Managed" folder.
-
----
-
-You can support development of my plugins through my Patreon page: https://www.patreon.com/ManlyMarco
