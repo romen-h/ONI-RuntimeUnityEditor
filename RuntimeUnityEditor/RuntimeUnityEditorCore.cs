@@ -175,9 +175,6 @@ namespace RuntimeUnityEditor.Core
             {
                 if (Show)
                 {
-                    var originalSkin = GUI.skin;
-                    GUI.skin = InterfaceMaker.CustomSkin;
-
                     if (_obsoleteCursor)
                         _curLockState.SetValue(null, false, null);
                     else
@@ -192,9 +189,6 @@ namespace RuntimeUnityEditor.Core
 #endif
 
                     MouseInspect.OnGUI();
-
-                    // Restore old skin for maximum compatibility
-                    GUI.skin = originalSkin;
                 }
             }
             catch (Exception ex)
