@@ -1,5 +1,6 @@
 # Runtime ~~Unity~~ ONI Editor / Debugging Tools
-In-game inspector, editor and interactive console for Oxygen Not Included. Based on t he [Runtime Unity Editor](https://github.com/ManlyMarco/RuntimeUnityEditor) project.
+In-game inspector, editor and interactive console for Oxygen Not Included.  
+Based on the [Runtime Unity Editor](https://github.com/ManlyMarco/RuntimeUnityEditor) project.
 
 ### Features
 - GameObject and component browser
