@@ -17,16 +17,19 @@ namespace RuntimeUnityEditor.Core.Utils
             var trt = typeof(Transform);
             var types = GetAllComponentTypes().Where(x => trt.IsAssignableFrom(x));
 
-            foreach (var component in ScanComponentTypes(types, false))
-                yield return component;
+            return ScanComponentTypes(types, false);
         }
 
         public static IEnumerable<ReadonlyCacheEntry> GetRootGoScanner()
         {
             RuntimeUnityEditorCore.Logger.Log(LogLevel.Debug, "Looking for Root Game Objects...");
 
+            List<ReadonlyCacheEntry> list = new List<ReadonlyCacheEntry>();
+
             foreach (GameObject go in Resources.FindObjectsOfTypeAll<GameObject>().Where(x => x.transform == x.transform.root))
-                yield return new ReadonlyCacheEntry($"GameObject({go.name})", go);
+                list.Add(new ReadonlyCacheEntry($"GameObject({go.name})", go));
+
+            return list;
         }
 
         public static IEnumerable<ReadonlyCacheEntry> GetMonoBehaviourScanner()
@@ -36,8 +39,7 @@ namespace RuntimeUnityEditor.Core.Utils
             var mbt = typeof(MonoBehaviour);
             var types = GetAllComponentTypes().Where(x => mbt.IsAssignableFrom(x));
 
-            foreach (var component in ScanComponentTypes(types, true))
-                yield return component;
+            return ScanComponentTypes(types, true);
         }
 
         public static IEnumerable<ReadonlyCacheEntry> GetComponentScanner()
@@ -49,8 +51,7 @@ namespace RuntimeUnityEditor.Core.Utils
             var allComps = GetAllComponentTypes().ToList();
             var types = allComps.Where(x => !mbt.IsAssignableFrom(x) && !trt.IsAssignableFrom(x));
 
-            foreach (var component in ScanComponentTypes(types, true))
-                yield return component;
+            return ScanComponentTypes(types, true);
         }
 
         private static IEnumerable<ReadonlyCacheEntry> ScanComponentTypes(IEnumerable<Type> types, bool noTransfroms)
@@ -68,8 +69,12 @@ namespace RuntimeUnityEditor.Core.Utils
                 return tr.name;
             }
 
+            List<ReadonlyCacheEntry> list = new List<ReadonlyCacheEntry>();
+
             foreach (var obj in allObjects.Distinct())
-                yield return new ReadonlyCacheEntry($"{GetTransformPath(obj.transform)} ({obj.GetType().Name})", obj);
+                list.Add(new ReadonlyCacheEntry($"{GetTransformPath(obj.transform)} ({obj.GetType().Name})", obj));
+
+            return list;
         }
 
         private static IEnumerable<Type> GetAllComponentTypes()
@@ -89,6 +94,8 @@ namespace RuntimeUnityEditor.Core.Utils
                 .SelectMany(Extensions.GetTypesSafe)
                 .Where(t => t.IsClass && !t.IsAbstract && !t.ContainsGenericParameters);
 
+            List<ReadonlyCacheEntry> list = new List<ReadonlyCacheEntry>();
+
             foreach (var type in query)
             {
                 object obj = null;
@@ -102,8 +109,10 @@ namespace RuntimeUnityEditor.Core.Utils
                     RuntimeUnityEditorCore.Logger.Log(LogLevel.Debug, ex.ToString());
                 }
                 if (obj != null)
-                    yield return new ReadonlyCacheEntry(type.Name + ".Instance", obj);
+                    list.Add(new ReadonlyCacheEntry(type.Name + ".Instance", obj));
             }
+
+            return list;
         }
     }
 }

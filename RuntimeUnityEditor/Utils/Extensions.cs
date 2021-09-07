@@ -49,12 +49,12 @@ namespace RuntimeUnityEditor.Core.Utils
             return self.GetType().GetMethod(name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy).Invoke(self, p);
         }
 
-        public static void ExecuteDelayed(this MonoBehaviour self, Action action, int waitCount = 1)
+        public static void ExecuteDelayed(this MonoBehaviour self, System.Action action, int waitCount = 1)
         {
             self.StartCoroutine(ExecuteDelayed_Routine(action, waitCount));
         }
 
-        private static IEnumerator ExecuteDelayed_Routine(Action action, int waitCount)
+        private static IEnumerator ExecuteDelayed_Routine(System.Action action, int waitCount)
         {
             for (var i = 0; i < waitCount; ++i)
                 yield return null;

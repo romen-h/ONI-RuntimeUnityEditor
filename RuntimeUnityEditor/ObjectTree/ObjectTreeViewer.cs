@@ -56,7 +56,7 @@ namespace RuntimeUnityEditor.Core.ObjectTree
             }
 
             _scrollTreeToSelected = true;
-            Enabled = true;
+            //Enabled = true;
         }
 
         public ObjectTreeViewer(MonoBehaviour pluginObject, GameObjectSearcher gameObjectSearcher)
@@ -194,7 +194,7 @@ namespace RuntimeUnityEditor.Core.ObjectTree
                 }
                 GUILayout.EndHorizontal();
 
-                if (needsHeightMeasure && Event.current.type == EventType.repaint)
+                if (needsHeightMeasure && Event.current.type == EventType.Repaint)
                     _singleObjectTreeItemHeight = Mathf.CeilToInt(GUILayoutUtility.GetLastRect().height);
             }
             else
@@ -211,7 +211,7 @@ namespace RuntimeUnityEditor.Core.ObjectTree
 
         public void DisplayViewer()
         {
-            if (_wireframe && _actuallyInsideOnGui && Event.current.type == EventType.layout)
+            if (_wireframe && _actuallyInsideOnGui && Event.current.type == EventType.Layout)
                 GL.wireframe = false;
 
             if (Enabled)
@@ -266,8 +266,10 @@ namespace RuntimeUnityEditor.Core.ObjectTree
 
                     GUILayout.FlexibleSpace();
 
+#if ENABLE_REPL
                     if (RuntimeUnityEditorCore.Instance.Repl != null)
                         RuntimeUnityEditorCore.Instance.ShowRepl = GUILayout.Toggle(RuntimeUnityEditorCore.Instance.ShowRepl, "REPL");
+#endif
 
                     _wireframe = GUILayout.Toggle(_wireframe, "Wireframe");
                 }
@@ -589,7 +591,7 @@ namespace RuntimeUnityEditor.Core.ObjectTree
         {
             GUILayout.BeginVertical(GUI.skin.box);
             {
-                DisplayTreeSearchBox();
+                //DisplayTreeSearchBox();
 
                 _treeScrollPosition = GUILayout.BeginScrollView(_treeScrollPosition,
                     GUILayout.Height(_objectTreeHeight), GUILayout.ExpandWidth(true));
@@ -632,12 +634,6 @@ namespace RuntimeUnityEditor.Core.ObjectTree
                     _gameObjectSearcher.Search(_searchText, false);
                     _searchTextComponents = _searchText;
                     Event.current.Use();
-                }
-
-                if (GUILayout.Button("Deep scene"))
-                {
-                    _gameObjectSearcher.Search(_searchText, true);
-                    _searchTextComponents = _searchText;
                 }
 
                 if (GUILayout.Button("Search static"))

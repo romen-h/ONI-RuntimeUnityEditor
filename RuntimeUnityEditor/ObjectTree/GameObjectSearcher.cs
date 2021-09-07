@@ -34,14 +34,47 @@ namespace RuntimeUnityEditor.Core.ObjectTree
             return Enumerable.Empty<GameObject>();
         }
 
+        private List<GameObject> cachedObjects;
+
         public IEnumerable<GameObject> GetSearchedOrAllObjects()
         {
+#if true
+            if (cachedObjects == null)
+			{
+                cachedObjects = new List<GameObject>();
+
+                cachedObjects.Add(Game.Instance.gameObject);
+                cachedObjects.Add(Assets.instance.gameObject);
+                cachedObjects.Add(SaveGame.Instance.gameObject);
+                cachedObjects.Add(GameScreenManager.Instance.gameObject);
+                cachedObjects.Add(DiscoveredResources.Instance.gameObject);
+                cachedObjects.Add(Component.FindObjectOfType<WorldInventory>().gameObject);
+
+                if (DlcManager.IsExpansion1Active())
+				{
+                    cachedObjects.Add(ClusterManager.Instance.gameObject);
+				}
+			}
+
+            return cachedObjects;
+
+            List<GameObject> currentObjects = new List<GameObject>(cachedObjects);
+            var allBuildings = Component.FindObjectsOfType<Building>();
+            foreach (var building in allBuildings)
+            {
+                var obj = building.gameObject;
+                currentObjects.Add(obj);
+            }
+
+            return currentObjects;
+#else
             if (_searchResults != null)
             {
                 _searchResults.RemoveAll(o => o == null);
                 return _searchResults;
             }
             return GetRootObjects();
+#endif
         }
 
         public void Refresh(bool full, Predicate<GameObject> objectFilter)

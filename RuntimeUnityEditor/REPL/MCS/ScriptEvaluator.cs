@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_REPL
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -64,3 +65,4 @@ namespace RuntimeUnityEditor.Core.REPL.MCS
         }
     }
 }
+#endif

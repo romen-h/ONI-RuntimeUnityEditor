@@ -95,7 +95,7 @@ namespace RuntimeUnityEditor.Core.Inspector
         private static void DrawBoolField(ICacheEntry setting, object o)
         {
             var boolVal = (bool)setting.GetValue();
-            var result = GUILayout.Toggle(boolVal, boolVal ? "True" : "False", GUILayout.ExpandWidth(true));
+            var result = GUILayout.Toggle(boolVal, boolVal ? "True" : "False", GUILayout.ExpandWidth(false));
             if (result != boolVal)
                 setting.SetValue(result);
         }
@@ -150,7 +150,7 @@ namespace RuntimeUnityEditor.Core.Inspector
         private static void DrawComboboxField(ICacheEntry setting, IList list, object value)
         {
             var buttonText = new GUIContent(value.ToString());
-            var dispRect = GUILayoutUtility.GetRect(buttonText, GUI.skin.button, GUILayout.ExpandWidth(true));
+            var dispRect = GUILayoutUtility.GetRect(buttonText, GUI.skin.button, GUILayout.ExpandWidth(false));
 
             if (!_comboBoxCache.TryGetValue(setting, out var box))
             {

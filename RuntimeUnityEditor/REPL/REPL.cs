@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_REPL
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -235,3 +236,4 @@ namespace RuntimeUnityEditor.Core.REPL
         }
     }
 }
+#endif

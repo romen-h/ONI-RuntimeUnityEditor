@@ -18,7 +18,9 @@ namespace RuntimeUnityEditor.Core
 
         public Inspector.Inspector Inspector { get; }
         public ObjectTreeViewer TreeViewer { get; }
+#if ENABLE_REPL
         public ReplWindow Repl { get; private set; }
+#endif
 
         public event EventHandler SettingsChanged;
 
@@ -35,6 +37,7 @@ namespace RuntimeUnityEditor.Core
             }
         }
 
+#if ENABLE_REPL
         public bool ShowRepl
         {
             get => Repl != null && Repl.Show;
@@ -47,6 +50,7 @@ namespace RuntimeUnityEditor.Core
                 }
             }
         }
+#endif
 
         public bool EnableMouseInspect
         {
@@ -91,7 +95,7 @@ namespace RuntimeUnityEditor.Core
         
         private KeyCode _showHotkey = KeyCode.F12;
 
-        internal RuntimeUnityEditorCore(MonoBehaviour pluginObject, ILoggerWrapper logger, string configPath)
+        public RuntimeUnityEditorCore(MonoBehaviour pluginObject, ILoggerWrapper logger, string configPath)
         {
             if (Instance != null)
                 throw new InvalidOperationException("Can only create one instance of the Core object");
@@ -132,6 +136,7 @@ namespace RuntimeUnityEditor.Core
                 TreeViewer.TreeSelectionChangedCallback = transform => _gizmoDrawer.UpdateState(transform);
             }
 
+#if ENABLE_REPL
             if (UnityFeatureHelper.SupportsRepl)
             {
                 try
@@ -145,8 +150,10 @@ namespace RuntimeUnityEditor.Core
                     Repl = null;
                 }
             }
+#endif
         }
 
+#if ENABLE_REPL
         private IEnumerator DelayedReplSetup()
         {
             yield return null;
@@ -160,30 +167,41 @@ namespace RuntimeUnityEditor.Core
                 Repl = null;
             }
         }
+#endif
 
-        internal void OnGUI()
+        public void OnGUI()
         {
-            if (Show)
+            try
             {
-                var originalSkin = GUI.skin;
-                GUI.skin = InterfaceMaker.CustomSkin;
+                if (Show)
+                {
+                    var originalSkin = GUI.skin;
+                    GUI.skin = InterfaceMaker.CustomSkin;
 
-                if (_obsoleteCursor)
-                    _curLockState.SetValue(null, false, null);
-                else
-                    _curLockState.SetValue(null, 0, null);
-                
-                _curVisible.SetValue(null, true, null);
-                
-                Inspector.DisplayInspector();
-                TreeViewer.DisplayViewer();
+                    if (_obsoleteCursor)
+                        _curLockState.SetValue(null, false, null);
+                    else
+                        _curLockState.SetValue(null, 0, null);
+
+                    _curVisible.SetValue(null, true, null);
+
+                    Inspector.DisplayInspector();
+                    TreeViewer.DisplayViewer();
+#if ENABLE_REPL
                 Repl?.DisplayWindow();
-                
-                MouseInspect.OnGUI();
+#endif
 
-                // Restore old skin for maximum compatibility
-                GUI.skin = originalSkin;
+                    MouseInspect.OnGUI();
+
+                    // Restore old skin for maximum compatibility
+                    GUI.skin = originalSkin;
+                }
             }
+            catch (Exception ex)
+			{
+                Debug.Log("[RuntimeEditor][OnGUI Exception]:");
+                Debug.Log(ex.ToString());
+			}
         }
 
         public bool Show
@@ -229,7 +247,7 @@ namespace RuntimeUnityEditor.Core
             }
         }
 
-        internal void Update()
+        public void Update()
         {
             if (Input.GetKeyDown(ShowHotkey))
                 Show = !Show;
@@ -251,7 +269,7 @@ namespace RuntimeUnityEditor.Core
             }
         }
 
-        internal void LateUpdate()
+        public void LateUpdate()
         {
             if (Show)
             {
@@ -277,34 +295,32 @@ namespace RuntimeUnityEditor.Core
 
             var screenRect = new Rect(
                 screenOffset,
-                screenOffset,
+                120,
                 Screen.width - screenOffset * 2,
-                Screen.height - screenOffset * 2);
+                Screen.height - 240);
 
-            var centerWidth = (int)Mathf.Min(850, screenRect.width);
-            var centerX = (int)(screenRect.xMin + screenRect.width / 2 - Mathf.RoundToInt((float)centerWidth / 2));
-
-            var inspectorHeight = (int)(screenRect.height / 4) * 3;
+            var centerWidth = 850;
             Inspector.UpdateWindowSize(new Rect(
-                centerX,
+                screenRect.xMax - centerWidth,
                 screenRect.yMin,
                 centerWidth,
-                inspectorHeight));
+                screenRect.yMax));
 
-            var rightWidth = 350;
             var treeViewHeight = screenRect.height;
             TreeViewer.UpdateWindowSize(new Rect(
-                screenRect.xMax - rightWidth,
+                screenRect.xMin,
                 screenRect.yMin,
-                rightWidth,
+                350,
                 treeViewHeight));
 
+#if ENABLE_REPL
             var replPadding = 8;
             Repl?.UpdateWindowSize(new Rect(
                 centerX,
                 screenRect.yMin + inspectorHeight + replPadding,
                 centerWidth,
                 screenRect.height - inspectorHeight - replPadding));
+#endif
         }
     }
 }

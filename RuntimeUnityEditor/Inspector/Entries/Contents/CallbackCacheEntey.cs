@@ -5,9 +5,9 @@ namespace RuntimeUnityEditor.Core.Inspector.Entries
     public class CallbackCacheEntry : CacheEntryBase
     {
         private readonly string _message;
-        private readonly Action _callback;
+        private readonly System.Action _callback;
 
-        public CallbackCacheEntry(string name, string message, Action callback) : base(name)
+        public CallbackCacheEntry(string name, string message, System.Action callback) : base(name)
         {
             _message = message;
             _callback = callback ?? throw new ArgumentNullException(nameof(callback));

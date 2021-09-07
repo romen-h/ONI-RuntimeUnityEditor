@@ -132,53 +132,12 @@ namespace RuntimeUnityEditor.Core.Inspector
             {
                 GUILayout.BeginVertical();
                 {
-                    GUILayout.BeginHorizontal();
+                    GUILayout.BeginHorizontal(GUI.skin.box, GUILayout.Width(160));
                     {
-                        GUILayout.BeginHorizontal(GUI.skin.box, GUILayout.ExpandWidth(true));
-                        {
-                            GUILayout.Label("Filter:", GUILayout.ExpandWidth(false));
-
-                            GUI.SetNextControlName(SearchBoxName);
-                            SearchString = GUILayout.TextField(SearchString, GUILayout.ExpandWidth(true));
-
-                            if (_focusSearchBox)
-                            {
-                                GUI.FocusWindow(id);
-                                GUI.FocusControl(SearchBoxName);
-                                _focusSearchBox = false;
-                            }
-
-                            GUILayout.Label("Find:", GUILayout.ExpandWidth(false));
-                            foreach (var obj in new[]
-                            {
-                                new KeyValuePair<object, string>(
-                                    EditorUtilities.GetInstanceClassScanner().OrderBy(x => x.Name()), "Instances"),
-                                new KeyValuePair<object, string>(EditorUtilities.GetComponentScanner().OrderBy(x => x.Name()),
-                                    "Components"),
-                                new KeyValuePair<object, string>(
-                                    EditorUtilities.GetMonoBehaviourScanner().OrderBy(x => x.Name()), "MonoBehaviours"),
-                                new KeyValuePair<object, string>(EditorUtilities.GetTransformScanner().OrderBy(x => x.Name()),
-                                    "Transforms")
-                                //                            new KeyValuePair<object, string>(GetTypeScanner(CurrentTab.InspectorStack.Peek().GetType()).OrderBy(x=>x.Name()), CurrentTab.InspectorStack.Peek().GetType().ToString()+"s"),
-                            })
-                            {
-                                if (obj.Key == null) continue;
-                                if (GUILayout.Button(obj.Value, GUILayout.ExpandWidth(false)))
-                                    Push(new InstanceStackEntry(obj.Key, obj.Value), true);
-                            }
-                        }
-                        GUILayout.EndHorizontal();
-
-                        GUILayout.Space(6);
-
-                        GUILayout.BeginHorizontal(GUI.skin.box, GUILayout.Width(160));
-                        {
-                            if (GUILayout.Button("Help"))
-                                Push(InspectorHelpObject.Create(), true);
-                            if (GUILayout.Button("Close"))
-                                Show = false;
-                        }
-                        GUILayout.EndHorizontal();
+                        if (GUILayout.Button("Help"))
+                            Push(InspectorHelpObject.Create(), true);
+                        if (GUILayout.Button("Close"))
+                            Show = false;
                     }
                     GUILayout.EndHorizontal();
 

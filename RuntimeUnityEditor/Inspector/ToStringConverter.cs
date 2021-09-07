@@ -20,7 +20,7 @@ namespace RuntimeUnityEditor.Core.Inspector
 
         public static string ObjectToString(object value)
         {
-            var isNull = value.IsNullOrDestroyed();
+            var isNull = Extensions.IsNullOrDestroyed(value);
             if (isNull != null) return isNull;
 
             switch (value)
@@ -161,7 +161,7 @@ namespace RuntimeUnityEditor.Core.Inspector
             if(value == null && valueType == typeof(string))
                 return "";
 
-            var isNull = value.IsNullOrDestroyed();
+            var isNull = Extensions.IsNullOrDestroyed(value);
             if (isNull != null) return isNull;
 
             var typeConverter = TomlTypeConverter.GetConverter(valueType);
