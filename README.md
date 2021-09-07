@@ -1,12 +1,10 @@
-# Runtime Unity Editor / Debugging Tools
-In-game inspector, editor and interactive console for applications made with Unity3D game engine. It's designed for debugging and modding Unity games, but can also be used as a universal trainer.
+# Runtime ~~Unity~~ ONI Editor / Debugging Tools
+In-game inspector, editor and interactive console for Oxygen Not Included. Based on t he [Runtime Unity Editor](https://github.com/ManlyMarco/RuntimeUnityEditor) project.
 
 ### Features
-- Works on most Unity games supported by [BepInEx](https://github.com/BepInEx/BepInEx)
 - GameObject and component browser
 - Object inspector that allows modifying values of objects in real time
-- REPL C# console
-- All parts are integrated together (e.g. REPL console can access inspected object, inspector can focus objects on GameObject list, etc.)
+- ~~REPL C# console~~ *Not upgraded for .NEY 4.7.1 yet*
 
 ![preview](https://user-images.githubusercontent.com/39247311/64476158-ce1a4c00-d18b-11e9-97d6-084452cdbf0a.PNG)
 
@@ -21,12 +19,12 @@ Note: If the plugin fails to load under BepInEx 4 with a type load exception, mo
 
 ### How to build
 1. Get Visual Studio 2019 (recommended) or the latest version of Visual Studio 2017.
-2. Clone the repository recursively (`git clone --recursive https://github.com/ManlyMarco/RuntimeUnityEditor`). 
-3. Open the solution in Visual Studio and hit Build All.
+2. Clone the repository.
+3. Open the solution in Visual Studio and build the `RuntimeUnityEditor.Core` and `RuntimeUnityEditor.ONI` projects.
 
 Notes:
 - If you already have the repository cloned or want to update the mcs submodule you need to run `git submodule update --init --recursive` on your local repository.
-- You have to reference UnityEngine.dll from Unity 5.x. The new UnityEngine.dll forwards all of the split types into their new respective dll files, therefore doing this allows runtime editor to run on any Unity version.
+- You have to reconnect the references to the Oxygen Not Included "Managed" folder.
 
 ---
 
