@@ -16,3 +16,4 @@ Based on the [Runtime Unity Editor](https://github.com/ManlyMarco/RuntimeUnityEd
 
 Notes:
 - You have to reconnect the references to the Oxygen Not Included "Managed" folder.
+- After installing the mod, copy the `mod.yaml` and `mod_info.yaml` files to the mod folder.
