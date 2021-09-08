@@ -5,7 +5,7 @@ Based on the [Runtime Unity Editor](https://github.com/ManlyMarco/RuntimeUnityEd
 ### Features
 - GameObject and component browser
 - Object inspector that allows modifying values of objects in real time
-- ~~REPL C# console~~ *Not upgraded for .NEY 4.7.1 yet*
+- ~~REPL C# console~~ *Not upgraded for .NET 4.7.1 yet*
 
 ![preview](https://user-images.githubusercontent.com/39247311/64476158-ce1a4c00-d18b-11e9-97d6-084452cdbf0a.PNG)
 
